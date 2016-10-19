@@ -17,7 +17,8 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 public class MainActivity extends Activity {
-    EditText sendBtn;
+    Button sendBtn;
+    EditText moarsetap;
     public EditText notsensitive1;
     public EditText notsensitive2;
     EditText txtphoneNo;
@@ -32,7 +33,8 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        sendBtn = (EditText) findViewById(R.id.btnSendSMS);
+        sendBtn = (Button) findViewById(R.id.btnSendSMS);
+        moarsetap = (EditText) findViewById(R.id.moarsetap);
         notsensitive1= (EditText) findViewById(R.id.notsensitive1);
         notsensitive2 = (EditText) findViewById(R.id.notsensitive2);
         txtphoneNo = (EditText) findViewById(R.id.editText);
@@ -66,6 +68,12 @@ public class MainActivity extends Activity {
             public void onClick(View view) {
                 sendSMSMessage();
                 txtMessage.setText("");
+            }
+        });
+
+        moarsetap.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                //moarse aqui
             }
         });
 
