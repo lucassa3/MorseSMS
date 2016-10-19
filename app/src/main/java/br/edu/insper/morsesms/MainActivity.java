@@ -64,7 +64,6 @@ public class MainActivity extends Activity {
         listItems.add("Estou com sede!");
         listItems.add("Ir ao Banheiro");
         listItems.add("Obrigado!");
-        listItems.add("Obrigado!");
 
         adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, listItems);
         quickMessages.setAdapter(adapter);

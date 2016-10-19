@@ -12,7 +12,7 @@
     <RelativeLayout
         android:id="@+id/layoutup"
         android:layout_height="wrap_content"
-        android:paddingTop="400dp"
+        android:paddingTop="350dp"
         android:layout_width="match_parent">
     <TextView
         android:id="@+id/textView1"
@@ -56,7 +56,7 @@
         android:id="@+id/layoutmiddle">
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="100dp"
             android:orientation="horizontal">
             <EditText android:id="@+id/notsensitive3"
                 android:layout_width="0dp"
@@ -103,7 +103,7 @@
         android:focusable="false"
         android:textAlignment="center"
         android:background="@color/colorPrimaryDark"
-        android:text="clique aqui"
+        android:text="morse"
         />
 
     <EditText android:id="@+id/notsensitive2"
