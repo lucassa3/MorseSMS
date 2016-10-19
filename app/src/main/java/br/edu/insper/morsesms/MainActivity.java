@@ -17,7 +17,9 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 public class MainActivity extends Activity {
-    Button sendBtn;
+    EditText sendBtn;
+    public EditText notsensitive1;
+    public EditText notsensitive2;
     EditText txtphoneNo;
     EditText txtMessage;
     ListView quickMessages;
@@ -30,10 +32,17 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        sendBtn = (Button) findViewById(R.id.btnSendSMS);
-
+        sendBtn = (EditText) findViewById(R.id.btnSendSMS);
+        notsensitive1= (EditText) findViewById(R.id.notsensitive1);
+        notsensitive2 = (EditText) findViewById(R.id.notsensitive2);
         txtphoneNo = (EditText) findViewById(R.id.editText);
         txtMessage = (EditText) findViewById(R.id.editText2);
+
+
+        notsensitive1.setEnabled(false);
+        notsensitive2.setEnabled(false);
+
+
 
 
 
