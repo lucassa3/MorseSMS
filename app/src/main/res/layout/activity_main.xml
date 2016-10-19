@@ -12,6 +12,7 @@
     <RelativeLayout
         android:id="@+id/layoutup"
         android:layout_height="wrap_content"
+        android:paddingTop="400dp"
         android:layout_width="match_parent">
     <TextView
         android:id="@+id/textView1"
@@ -41,11 +42,12 @@
         android:layout_marginTop="13dp"
         android:layout_below="@+id/editText"
         android:layout_centerHorizontal="true" />
+
     <ListView
-        android:layout_height="wrap_content"
+        android:layout_height="100dp"
         android:id="@+id/QuickMessages"
         android:layout_below="@+id/editText2"
-        android:layout_width="wrap_content" />
+        android:layout_width="match_parent" />
     </RelativeLayout>
     <RelativeLayout
         android:layout_width="match_parent"
@@ -55,13 +57,27 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true">
-            <Button
-                android:id="@+id/btnSendSMS"
-                android:layout_width="match_parent"
+            android:orientation="horizontal">
+            <EditText android:id="@+id/notsensitive3"
+                android:layout_width="0dp"
                 android:layout_height="100dp"
-                android:text="Enviar SMS"
+                android:layout_weight="0.4"
+                />
 
+            <EditText android:id="@+id/btnSendSMS"
+                android:layout_width="0dp"
+                android:layout_height="100dp"
+                android:layout_weight="0.2"
+                android:focusable="false"
+                android:textAlignment="center"
+                android:text="enviar sms"
+                android:background="@android:color/transparent"
+                />
+
+            <EditText android:id="@+id/notsensitive4"
+                android:layout_width="0dp"
+                android:layout_height="100dp"
+                android:layout_weight="0.4"
                 />
         </LinearLayout>
     </RelativeLayout>
