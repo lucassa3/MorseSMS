@@ -12,7 +12,7 @@
     <RelativeLayout
         android:id="@+id/layoutup"
         android:layout_height="wrap_content"
-        android:paddingTop="30dp"
+        android:paddingTop="350dp"
         android:layout_width="match_parent">
     <TextView
         android:id="@+id/textView1"
@@ -24,14 +24,22 @@
         android:textSize="30dp" />
 
 
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/editText"
+        android:hint="Enter Phone Number"
+        android:inputType="phone"
+        android:layout_below="@+id/textView1"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="47dp" />
 
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/editText2"
         android:hint="Enter SMS"
-        android:layout_marginTop="50dp"
-        android:layout_marginBottom="20dp"
+        android:layout_marginTop="13dp"
         android:layout_below="@+id/editText"
         android:layout_centerHorizontal="true" />
 
@@ -52,14 +60,14 @@
             android:orientation="horizontal">
             <EditText android:id="@+id/notsensitive3"
                 android:layout_width="0dp"
-                android:layout_height="70dp"
+                android:layout_height="100dp"
                 android:layout_weight="0.4"
                 />
 
             <EditText android:id="@+id/btnSendSMS"
                 android:layout_width="0dp"
-                android:layout_height="70dp"
-                android:layout_weight="0.4"
+                android:layout_height="100dp"
+                android:layout_weight="0.2"
                 android:focusable="false"
                 android:textAlignment="center"
                 android:text="enviar sms"
@@ -68,7 +76,7 @@
 
             <EditText android:id="@+id/notsensitive4"
                 android:layout_width="0dp"
-                android:layout_height="70dp"
+                android:layout_height="100dp"
                 android:layout_weight="0.4"
                 />
         </LinearLayout>
@@ -83,24 +91,24 @@
             android:orientation="horizontal">
     <EditText android:id="@+id/notsensitive1"
         android:layout_width="0dp"
-        android:layout_height="100dp"
+        android:layout_height="150dp"
         android:layout_weight="0.4"
         android:background="@color/colorPrimaryDark"
     />
 
     <EditText android:id="@+id/moarsetap"
         android:layout_width="0dp"
-        android:layout_height="100dp"
-        android:layout_weight="0.4"
+        android:layout_height="150dp"
+        android:layout_weight="0.2"
         android:focusable="false"
         android:textAlignment="center"
         android:background="@color/colorPrimaryDark"
-        android:text="toque aqui"
+        android:text="morse"
         />
 
     <EditText android:id="@+id/notsensitive2"
         android:layout_width="0dp"
-        android:layout_height="100dp"
+        android:layout_height="150dp"
         android:layout_weight="0.4"
         android:background="@color/colorPrimaryDark"
         />

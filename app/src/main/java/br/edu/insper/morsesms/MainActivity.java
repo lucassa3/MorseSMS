@@ -6,6 +6,7 @@ import android.telephony.SmsManager;
 import android.util.ArraySet;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -15,15 +16,15 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Timer;
 
 public class MainActivity extends Activity {
     EditText sendBtn;
-    EditText moarsetap;
+    EditText morsetap;
     EditText notsensitive3;
     EditText notsensitive4;
     EditText notsensitive1;
     EditText notsensitive2;
-    EditText txtphoneNo;
     EditText txtMessage;
     ListView quickMessages;
 
@@ -36,23 +37,18 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
 
         sendBtn = (EditText) findViewById(R.id.btnSendSMS);
-        moarsetap = (EditText) findViewById(R.id.moarsetap);
-        notsensitive1= (EditText) findViewById(R.id.notsensitive1);
+        morsetap = (EditText) findViewById(R.id.moarsetap);
+        notsensitive1 = (EditText) findViewById(R.id.notsensitive1);
         notsensitive2 = (EditText) findViewById(R.id.notsensitive2);
-        notsensitive3= (EditText) findViewById(R.id.notsensitive3);
+        notsensitive3 = (EditText) findViewById(R.id.notsensitive3);
         notsensitive4 = (EditText) findViewById(R.id.notsensitive4);
-        txtphoneNo = (EditText) findViewById(R.id.editText);
         txtMessage = (EditText) findViewById(R.id.editText2);
-
 
         notsensitive1.setEnabled(false);
         notsensitive2.setEnabled(false);
         notsensitive3.setEnabled(false);
         notsensitive4.setEnabled(false);
-
-
-
-
+        txtMessage.setEnabled(false);
 
         quickMessages = (ListView) findViewById(R.id.QuickMessages);
 
@@ -76,23 +72,96 @@ public class MainActivity extends Activity {
             }
         });
 
-        moarsetap.setOnClickListener(new View.OnClickListener() {
+        morsetap.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 //moarse aqui
             }
         });
 
-        quickMessages.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+        quickMessages.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String escolha = listItems.get(position).toString();
                 txtMessage.setText(escolha);
             }
         });
+
+
+        final CharactersTree charTree = new CharactersTree();
+        final Press botao = new Press();
+        final Press release = new Press();
+        //final Timer timer = new Timer();
+        //final Timer timer2 = new Timer();
+
+        morsetap.setOnTouchListener(new View.OnTouchListener() {
+            Characters characters = charTree.charactersTree[0];
+            String mensagem = "";
+
+            @Override
+            public boolean onTouch (View arg0, MotionEvent arg1){
+                switch (arg1.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+
+                        botao.setActivationTime();
+
+
+                        long releasedPeriod = System.currentTimeMillis() - release.getActivationTime();
+                        System.out.println(releasedPeriod);
+
+                        if (releasedPeriod >= 1000) {
+                            mensagem += characters.getCharacter();
+                            txtMessage.setText(mensagem);
+                            characters = charTree.charactersTree[0];
+                        }
+
+                        if (releasedPeriod >= 4000) {
+                            mensagem += " ";
+                        }
+                        //timer.cancel();
+                        //timer2.cancel();
+                        return true;
+
+                    case MotionEvent.ACTION_UP:
+                        release.setActivationTime();
+
+                        long pressedPeriod = System.currentTimeMillis() - botao.getActivationTime();
+
+                        if (pressedPeriod <= 200) {
+                            characters = characters.getLeft();
+                            System.out.println(characters.getCharacter());
+                            //txtMessage.setText("curto");
+                        } else {
+                            characters = characters.getRight();
+                            System.out.println(characters.getCharacter());
+                            //txtMessage.setText("longo");
+                        }
+
+                               /* timer.schedule(new TimerTask() {
+                                    @Override
+                                    public void run() {
+                                        mensagem += characters.getCharacter();
+                                        txtMessage.setText(mensagem);
+                                        characters = charTree.charactersTree[0];
+                                    }
+                                }, 1000); //time out 5s
+
+                                timer2.schedule(new TimerTask() {
+                                    @Override
+                                    public void run() {
+                                        mensagem += " ";
+                                    }
+                                }, 3000); //time out 5s */
+
+                        return true;
+                    }
+                return false;
+            }
+        });
     }
+
     protected void sendSMSMessage() {
         Log.i("Send SMS", "");
-        String phoneNo = txtphoneNo.getText().toString();
+        String phoneNo = "+5511972217872";
         String message = txtMessage.getText().toString();
         System.out.println(message);
 
@@ -103,7 +172,7 @@ public class MainActivity extends Activity {
         }
 
         catch (Exception e) {
-            Toast.makeText(getApplicationContext(), "SMS faild, please try again.", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "SMS failed, please try again.", Toast.LENGTH_LONG).show();
             e.printStackTrace();
         }
     }
