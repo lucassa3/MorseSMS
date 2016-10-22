@@ -2,6 +2,8 @@ package br.edu.insper.morsesms;
 
 import android.os.Bundle;
 import android.app.Activity;
+import android.os.Handler;
+import android.os.Message;
 import android.telephony.SmsManager;
 import android.util.ArraySet;
 import android.util.Log;
@@ -17,6 +19,7 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Timer;
+import java.util.TimerTask;
 
 public class MainActivity extends Activity {
     EditText sendBtn;
@@ -90,12 +93,14 @@ public class MainActivity extends Activity {
         final CharactersTree charTree = new CharactersTree();
         final Press botao = new Press();
         final Press release = new Press();
-        //final Timer timer = new Timer();
-        //final Timer timer2 = new Timer();
+
 
         morsetap.setOnTouchListener(new View.OnTouchListener() {
             Characters characters = charTree.charactersTree[0];
             String mensagem = "";
+            boolean check = false;
+            Timer timer;
+            Timer timer2;
 
             @Override
             public boolean onTouch (View arg0, MotionEvent arg1){
@@ -108,7 +113,7 @@ public class MainActivity extends Activity {
                         long releasedPeriod = System.currentTimeMillis() - release.getActivationTime();
                         System.out.println(releasedPeriod);
 
-                        if (releasedPeriod >= 1000) {
+                        /*if (releasedPeriod >= 1000) {
                             mensagem += characters.getCharacter();
                             txtMessage.setText(mensagem);
                             characters = charTree.charactersTree[0];
@@ -116,9 +121,18 @@ public class MainActivity extends Activity {
 
                         if (releasedPeriod >= 4000) {
                             mensagem += " ";
+                        }*/
+
+                        if (check==true) {
+                            timer.cancel();
+                            timer2.cancel();
+
                         }
-                        //timer.cancel();
-                        //timer2.cancel();
+                        else {
+                            check=true;
+
+                        }
+
                         return true;
 
                     case MotionEvent.ACTION_UP:
@@ -136,21 +150,32 @@ public class MainActivity extends Activity {
                             //txtMessage.setText("longo");
                         }
 
-                               /* timer.schedule(new TimerTask() {
-                                    @Override
-                                    public void run() {
-                                        mensagem += characters.getCharacter();
-                                        txtMessage.setText(mensagem);
-                                        characters = charTree.charactersTree[0];
-                                    }
-                                }, 1000); //time out 5s
+                        final Handler mHandler = new Handler() {
+                            public void handleMessage(Message msg) {
+                                txtMessage.setText(mensagem); //this is the textview
+                            }
+                        };
 
-                                timer2.schedule(new TimerTask() {
-                                    @Override
-                                    public void run() {
-                                        mensagem += " ";
-                                    }
-                                }, 3000); //time out 5s */
+                        timer = new Timer();
+                        timer.schedule(new TimerTask() {
+                            @Override
+                            public void run() {
+                                mensagem += characters.getCharacter();
+                                mHandler.obtainMessage(1).sendToTarget();
+                                characters = charTree.charactersTree[0];
+                            }
+                        }, 1000); //time out 1s
+
+
+                        timer2 = new Timer();
+                        timer2.schedule(new TimerTask() {
+                            @Override
+                            public void run() {
+                                mensagem += " ";
+                            }
+                        }, 3000); //time out 3s
+
+
 
                         return true;
                     }
