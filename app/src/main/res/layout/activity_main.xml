@@ -8,102 +8,142 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="MainActivity">
+    tools:context="MainActivity"
+    android:background="?android:attr/colorActivatedHighlight">
+
+
     <RelativeLayout
-        android:id="@+id/layoutup"
+        android:id="@+id/Top"
+
         android:layout_height="wrap_content"
-        android:paddingTop="30dp"
-        android:layout_width="match_parent">
-    <TextView
-        android:id="@+id/textView1"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Morse SMS"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:textSize="30dp" />
+        android:layout_alignParentStart="true"
+        android:layout_above="@+id/Middle">
+
+        <TextView
+            android:id="@+id/SMSView"
+            android:textSize="25sp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="SMS"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="30dp"
+            android:background="@android:color/white"
+            android:layout_centerHorizontal="true" />
+
+        <TextView
+            android:id="@+id/MorseCodeView"
+            android:text="Morse code of actual letter"
+            android:textSize="25sp"
+            android:layout_below="@+id/SMSView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="30dp"
+            android:background="@android:color/white"
+             />
+        <TextView
+            android:id="@+id/ContactSelected"
+            android:text="Selected Contact"
+            android:textSize="25sp"
+            android:layout_below="@+id/MorseCodeView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="30dp"
+            android:background="@android:color/white"
+            />
 
 
-
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/editText2"
-        android:hint="Enter SMS"
-        android:layout_marginTop="50dp"
-        android:layout_marginBottom="20dp"
-        android:layout_below="@+id/editText"
-        android:layout_centerHorizontal="true" />
-
-    <ListView
-        android:layout_height="100dp"
-        android:id="@+id/QuickMessages"
-        android:layout_below="@+id/editText2"
-        android:layout_width="match_parent" />
     </RelativeLayout>
+
     <RelativeLayout
+        android:id="@+id/Middle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/layoutup"
-        android:id="@+id/layoutmiddle">
+        android:gravity="center"
+        android:layout_above="@+id/Bottom"
+        android:layout_alignParentStart="true">
+
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="100dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:orientation="horizontal">
-            <EditText android:id="@+id/notsensitive3"
-                android:layout_width="0dp"
-                android:layout_height="70dp"
-                android:layout_weight="0.4"
-                />
 
-            <EditText android:id="@+id/btnSendSMS"
-                android:layout_width="0dp"
-                android:layout_height="70dp"
-                android:layout_weight="0.4"
-                android:focusable="false"
-                android:textAlignment="center"
-                android:text="enviar sms"
-                android:background="@android:color/transparent"
-                />
+            <Button
+                android:text="Cont"
+                android:layout_height="wrap_content"
+                android:id="@+id/ContactsBtn"
+                android:background="@android:color/darker_gray"
+                android:layout_width="70dp" />
 
-            <EditText android:id="@+id/notsensitive4"
-                android:layout_width="0dp"
-                android:layout_height="70dp"
-                android:layout_weight="0.4"
-                />
+            <Button
+                android:text="QM"
+                android:layout_height="wrap_content"
+                android:id="@+id/QuickMessagesBtn"
+                android:background="@android:color/background_light"
+                android:layout_width="70dp" />
+
+            <Button
+                android:text="Send"
+                android:layout_height="wrap_content"
+                android:id="@+id/SendSMSBtn"
+                android:layout_width="70dp"
+                android:background="@android:color/holo_green_light" />
+
+            <Button
+                android:text="Back"
+                android:layout_height="wrap_content"
+                android:background="@android:color/holo_red_dark"
+                android:id="@+id/BackspaceBtn"
+                android:layout_width="70dp" />
+
         </LinearLayout>
     </RelativeLayout>
-    <RelativeLayout android:id="@+id/tapbutton"
+
+
+
+
+    <RelativeLayout
+        android:id="@+id/Bottom"
         android:layout_height="wrap_content"
-        android:layout_width="match_parent"
-        android:layout_below="@id/layoutmiddle">
+        android:layout_width="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
-    <EditText android:id="@+id/notsensitive1"
-        android:layout_width="0dp"
-        android:layout_height="100dp"
-        android:layout_weight="0.4"
-        android:background="@color/colorPrimaryDark"
-    />
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true">
 
-    <EditText android:id="@+id/moarsetap"
-        android:layout_width="0dp"
-        android:layout_height="100dp"
-        android:layout_weight="0.4"
-        android:focusable="false"
-        android:textAlignment="center"
-        android:background="@color/colorPrimaryDark"
-        android:text="toque aqui"
-        />
+            <EditText android:id="@+id/MorseTap"
+                android:layout_width="280dp"
+                android:layout_height="100dp"
+                android:focusable="false"
+                android:textAlignment="center"
+                android:background="@color/colorPrimary"
+                android:text="type here" />
+            <ListView
+                android:id="@+id/QuickMessages"
+                android:layout_width="280dp"
+                android:layout_height="100dp"
+                android:textAlignment="center"
+                android:background="@color/colorPrimary"
+                android:visibility="gone"
+                />
+            <ListView
+                android:id="@+id/Contacts"
+                android:layout_width="280dp"
+                android:layout_height="100dp"
+                android:textAlignment="center"
+                android:background="@color/colorPrimary"
+                android:visibility="gone"
+                />
 
-    <EditText android:id="@+id/notsensitive2"
-        android:layout_width="0dp"
-        android:layout_height="100dp"
-        android:layout_weight="0.4"
-        android:background="@color/colorPrimaryDark"
-        />
+
         </LinearLayout>
     </RelativeLayout>
+
 </RelativeLayout>

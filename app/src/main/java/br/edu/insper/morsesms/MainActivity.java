@@ -1,13 +1,19 @@
 package br.edu.insper.morsesms;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.app.Activity;
 import android.os.Handler;
 import android.os.Message;
+import android.provider.ContactsContract;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.widget.SimpleCursorAdapter;
 import android.telephony.SmsManager;
-import android.util.ArraySet;
 import android.util.Log;
-import android.view.Menu;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
@@ -15,6 +21,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -22,62 +29,117 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class MainActivity extends Activity {
-    EditText sendBtn;
-    EditText morsetap;
-    EditText notsensitive3;
-    EditText notsensitive4;
-    EditText notsensitive1;
-    EditText notsensitive2;
-    EditText txtMessage;
+    Button sendSMSBtn;
+    Button backspaceBtn;
+    Button quickMessagesBtn;
+    Button contactsBtn;
+    
+    TextView smsView;
+    TextView morseCodeView;
+    TextView contactSelected;
+
+    EditText morseTap;
+
     ListView quickMessages;
+    ListView contacts;
 
     ArrayAdapter<String> adapter;
     ArrayList<String> listItems;
+
+    Cursor temp_cursor;
+
+    String contactName;
+    String contactPhone;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        sendBtn = (EditText) findViewById(R.id.btnSendSMS);
-        morsetap = (EditText) findViewById(R.id.moarsetap);
-        notsensitive1 = (EditText) findViewById(R.id.notsensitive1);
-        notsensitive2 = (EditText) findViewById(R.id.notsensitive2);
-        notsensitive3 = (EditText) findViewById(R.id.notsensitive3);
-        notsensitive4 = (EditText) findViewById(R.id.notsensitive4);
-        txtMessage = (EditText) findViewById(R.id.editText2);
+        if(ContextCompat.checkSelfPermission(this, Manifest.permission.SEND_SMS) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.SEND_SMS}, 0);
+        }
 
-        notsensitive1.setEnabled(false);
-        notsensitive2.setEnabled(false);
-        notsensitive3.setEnabled(false);
-        notsensitive4.setEnabled(false);
-        txtMessage.setEnabled(false);
+        if(ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_CONTACTS}, 0);
+        }
+
+        sendSMSBtn = (Button) findViewById(R.id.SendSMSBtn);
+        backspaceBtn = (Button) findViewById(R.id.BackspaceBtn);
+        quickMessagesBtn = (Button) findViewById(R.id.QuickMessagesBtn);
+        contactsBtn = (Button) findViewById(R.id.ContactsBtn);
+        
+        smsView = (TextView) findViewById(R.id.SMSView);
+        morseCodeView = (TextView)  findViewById(R.id.MorseCodeView);
+        contactSelected = (TextView)  findViewById(R.id.ContactSelected);
+        
+        morseTap = (EditText) findViewById(R.id.MorseTap);
 
         quickMessages = (ListView) findViewById(R.id.QuickMessages);
+        contacts = (ListView) findViewById(R.id.Contacts);
+
+        final CharacterNodeTree charTree = new CharacterNodeTree();
+        final Msg sms_view =  new Msg();
+        final Msg morse_code_view =  new Msg();
 
         listItems = new ArrayList<String>();
         listItems.add("SOS");
-        listItems.add("Sim");
-        listItems.add("Não");
-        listItems.add("Estou com fome!");
-        listItems.add("Estou com sede!");
-        listItems.add("Ir ao Banheiro");
-        listItems.add("Obrigado!");
+        listItems.add("Yes");
+        listItems.add("No");
+        listItems.add("I'm hungry!");
+        listItems.add("I'm thirsty!");
+        listItems.add("I need to go to the bathroom!");
+        listItems.add("Thank you!");
 
         adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, listItems);
         quickMessages.setAdapter(adapter);
 
+        temp_cursor = getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, null, null, null);startManagingCursor(temp_cursor);
+        String[] s = {ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME, ContactsContract.CommonDataKinds.Phone.NUMBER, ContactsContract.CommonDataKinds.Phone._ID};
+        int[] i = {android.R.id.text1, android.R.id.text2};
+        final SimpleCursorAdapter listAdapter = new SimpleCursorAdapter(this, android.R.layout.simple_list_item_2, temp_cursor, s, i);
+        contacts.setAdapter(listAdapter);
 
-        sendBtn.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View view) {
-                sendSMSMessage();
-                txtMessage.setText("");
+
+
+
+
+
+        contacts.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Cursor cursor = (Cursor) listAdapter.getItem(position);
+                contactName = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
+                contactPhone = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+                contactSelected.setText(contactName);
+                quickMessages.setVisibility(View.GONE);
+                contacts.setVisibility(View.GONE);
+                morseTap.setVisibility(View.VISIBLE);
             }
         });
 
-        morsetap.setOnClickListener(new View.OnClickListener() {
+        contactsBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                //moarse aqui
+                quickMessages.setVisibility(View.GONE);
+                morseTap.setVisibility(View.GONE);
+                contacts.setVisibility(View.VISIBLE);
+            }
+        });
+
+        sendSMSBtn.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                sendSMSMessage();
+                sms_view.eraseMorse_message();
+                smsView.setText("");
+                contactSelected.setText("");
+            }
+        });
+
+        quickMessagesBtn.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                quickMessages.setVisibility(View.VISIBLE);
+                morseTap.setVisibility(View.GONE);
+                contacts.setVisibility(View.GONE);
             }
         });
 
@@ -85,97 +147,130 @@ public class MainActivity extends Activity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String escolha = listItems.get(position).toString();
-                txtMessage.setText(escolha);
+                sms_view.eraseMorse_message();
+                smsView.setText(escolha);
+                quickMessages.setVisibility(View.GONE);
+                contacts.setVisibility(View.GONE);
+                morseTap.setVisibility(View.VISIBLE);
+
             }
         });
 
+        backspaceBtn.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                if (sms_view.getMorse_message().length()>0) {
+                    sms_view.removeChar();
+                }
+                System.out.println(sms_view.getMorse_message());
 
-        final CharactersTree charTree = new CharactersTree();
-        final Press botao = new Press();
-        final Press release = new Press();
+                if (smsView.getText().toString().length()>0) {
+                    smsView.setText(smsView.getText().toString().substring(0, smsView.getText().toString().length() - 1));
+                }
+            }
+        });
 
+        morseTap.setOnTouchListener(new View.OnTouchListener() {
+            
+            CharacterNode characterNode = charTree.Tree[0];
 
-        morsetap.setOnTouchListener(new View.OnTouchListener() {
-            Characters characters = charTree.charactersTree[0];
-            String mensagem = "";
+            Timer final_letter;
+            Timer final_word;
+
             boolean check = false;
-            Timer timer;
-            Timer timer2;
+            boolean next_letter = true;
 
+            long action_down_moment;
+            
             @Override
             public boolean onTouch (View arg0, MotionEvent arg1){
                 switch (arg1.getAction()) {
                     case MotionEvent.ACTION_DOWN:
+                        morseTap.setBackgroundColor(Color.parseColor("#1A9FC8"));
 
-                        botao.setActivationTime();
-
-
-                        long releasedPeriod = System.currentTimeMillis() - release.getActivationTime();
-                        System.out.println(releasedPeriod);
-
-                        /*if (releasedPeriod >= 1000) {
-                            mensagem += characters.getCharacter();
-                            txtMessage.setText(mensagem);
-                            characters = charTree.charactersTree[0];
-                        }
-
-                        if (releasedPeriod >= 4000) {
-                            mensagem += " ";
-                        }*/
+                        action_down_moment = System.currentTimeMillis();
 
                         if (check==true) {
-                            timer.cancel();
-                            timer2.cancel();
-
+                            final_letter.cancel();
+                            final_word.cancel();
                         }
                         else {
                             check=true;
-
                         }
 
                         return true;
 
                     case MotionEvent.ACTION_UP:
-                        release.setActivationTime();
 
-                        long pressedPeriod = System.currentTimeMillis() - botao.getActivationTime();
+                        morseTap.setBackgroundColor(Color.parseColor("#3ABFE8"));
+
+                        long pressedPeriod = System.currentTimeMillis() - action_down_moment;
 
                         if (pressedPeriod <= 200) {
-                            characters = characters.getLeft();
-                            System.out.println(characters.getCharacter());
-                            //txtMessage.setText("curto");
+                            if(characterNode.getLeft() != null) {
+                                characterNode = characterNode.getLeft();
+                                System.out.println(characterNode.getCharacter());
+
+                            }
+                            else {
+                                Toast.makeText(getApplicationContext(), "This letter does not exist!", Toast.LENGTH_LONG).show();
+                                next_letter = false;
+
+                            }
+
+                            morse_code_view.addChar('.');
+                            morseCodeView.setText(morse_code_view.getMorse_message());
+
                         } else {
-                            characters = characters.getRight();
-                            System.out.println(characters.getCharacter());
-                            //txtMessage.setText("longo");
+
+                            if(characterNode.getLeft() != null) {
+                                characterNode = characterNode.getRight();
+                                System.out.println(characterNode.getCharacter());
+
+                            }
+                            else {
+                                Toast.makeText(getApplicationContext(), "This letter does not exist!", Toast.LENGTH_LONG).show();
+                                next_letter = false;
+                            }
+
+                            morse_code_view.addChar('-');
+                            morseCodeView.setText(morse_code_view.getMorse_message());
                         }
 
                         final Handler mHandler = new Handler() {
                             public void handleMessage(Message msg) {
-                                txtMessage.setText(mensagem); //this is the textview
+
+                                if (next_letter==true) {
+                                    smsView.setText(sms_view.getMorse_message());
+                                }
+
+                                else {
+                                    next_letter = true;
+                                }
+                                morseCodeView.setText(morse_code_view.getMorse_message());
                             }
                         };
 
-                        timer = new Timer();
-                        timer.schedule(new TimerTask() {
+                        final_letter = new Timer();
+                        final_letter.schedule(new TimerTask() {
                             @Override
                             public void run() {
-                                mensagem += characters.getCharacter();
+
+                                if (next_letter==true) {
+                                    sms_view.addChar(characterNode.getCharacter());
+                                }
+                                morse_code_view.eraseMorse_message();
                                 mHandler.obtainMessage(1).sendToTarget();
-                                characters = charTree.charactersTree[0];
+                                characterNode = charTree.Tree[0];
                             }
-                        }, 1000); //time out 1s
+                        }, 800);
 
-
-                        timer2 = new Timer();
-                        timer2.schedule(new TimerTask() {
+                        final_word = new Timer();
+                        final_word.schedule(new TimerTask() {
                             @Override
                             public void run() {
-                                mensagem += " ";
+                                sms_view.addChar(' ');
                             }
-                        }, 3000); //time out 3s
-
-
+                        }, 3000);
 
                         return true;
                     }
@@ -186,8 +281,8 @@ public class MainActivity extends Activity {
 
     protected void sendSMSMessage() {
         Log.i("Send SMS", "");
-        String phoneNo = "+5511972217872";
-        String message = txtMessage.getText().toString();
+        String phoneNo = contactPhone;
+        String message = smsView.getText().toString();
         System.out.println(message);
 
         try {

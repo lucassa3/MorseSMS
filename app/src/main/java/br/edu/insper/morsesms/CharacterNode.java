@@ -4,12 +4,12 @@ package br.edu.insper.morsesms;
  * Created by Lucas Scarlato Astur on 17/10/2016.
  */
 
-public class Characters {
+public class CharacterNode {
     private char character;
 
 
-    private Characters left;
-    private Characters right;
+    private CharacterNode left;
+    private CharacterNode right;
 
 
 
@@ -22,22 +22,22 @@ public class Characters {
 
 
 
-    public Characters getRight() {
+    public CharacterNode getRight() {
         return this.right;
     }
 
-    public void setRight(Characters characters) {
-        this.right = characters;
+    public void setRight(CharacterNode characterNode) {
+        this.right = characterNode;
     }
 
 
 
-    public Characters getLeft() {
+    public CharacterNode getLeft() {
         return this.left;
     }
 
-    public void setLeft(Characters characters) {
-        this.left = characters;
+    public void setLeft(CharacterNode characterNode) {
+        this.left = characterNode;
     }
 
 
