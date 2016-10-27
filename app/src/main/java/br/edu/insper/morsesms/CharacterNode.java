@@ -7,17 +7,27 @@ package br.edu.insper.morsesms;
 public class CharacterNode {
     private char character;
 
+    private String path;
+    private int count = 0;
 
     private CharacterNode left;
     private CharacterNode right;
 
-
+    public int getCount() { return this.count;}
+    public void setCount(int count) { this.count=count;}
 
     public char getCharacter() {
         return this.character;
     }
     public void setCharacter(char character) {
         this.character = character;
+    }
+
+    public  String getPath() {
+        return this.path;
+    }
+    public void setPath(String path) {
+        this.path = path;
     }
 
 

@@ -42,7 +42,7 @@ public class CharacterNodeTree {
 
         Tree[7].setCharacter('s');
         Tree[7].setLeft(Tree[15]);
-        Tree[7].setRight(Tree[16]);
+       Tree[7].setRight(Tree[16]);
 
         Tree[8].setCharacter('u');
         Tree[8].setLeft(Tree[17]);
@@ -120,6 +120,8 @@ public class CharacterNodeTree {
         Tree[39].setCharacter('0');
 
     }
+
+
 
 
 

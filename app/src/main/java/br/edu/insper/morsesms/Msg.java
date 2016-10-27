@@ -6,7 +6,6 @@ package br.edu.insper.morsesms;
 
 public class Msg {
     private String morse_message =  "";
-
     public void addChar (char char1) {
         morse_message += char1;
     }
@@ -21,4 +20,5 @@ public class Msg {
     public void eraseMorse_message () {
         this.morse_message = "";
     }
+
 }
