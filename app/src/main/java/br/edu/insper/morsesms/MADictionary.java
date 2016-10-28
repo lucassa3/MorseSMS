@@ -1,5 +1,8 @@
 package br.edu.insper.morsesms;
 
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
@@ -13,6 +16,9 @@ public class MADictionary {
     CharacterNode characterNode;
     Queue<CharacterNode> fila;
     NodeMapper nm;
+    ArrayList<String> MAList;
+
+
 
 
     public MADictionary (CharacterNodeTree charTree) {
@@ -20,10 +26,7 @@ public class MADictionary {
         this.charTree = charTree;
         nm = new NodeMapper(charTree);
         characterNode = charTree.Tree[0];
-
-        }
-
-    public void create () {
+        MAList = new ArrayList<>();
         fila.add(characterNode);
         while (!fila.isEmpty()) {
             CharacterNode node = fila.remove();
@@ -36,11 +39,17 @@ public class MADictionary {
                 fila.add(node.getRight());
             }
 
-            System.out.println(node.getCharacter());
-            System.out.println(node.getPath());
+            String character = "" + node.getCharacter();
+            System.out.println(character);
+            String path = "" + node.getPath();
+            if (character != ""+null) {
 
-        }
+                MAList.add(character + "   " + path);
 
-    }}
+            }
+
+        }}
+}
+
 
 

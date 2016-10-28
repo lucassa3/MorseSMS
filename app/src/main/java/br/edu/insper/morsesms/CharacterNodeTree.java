@@ -12,7 +12,6 @@ public class CharacterNodeTree {
         for(int i =0; i < Tree.length; i++ ) {
             Tree[i] = new CharacterNode();
         }
-
         Tree[0].setLeft(Tree[1]);
         Tree[0].setRight(Tree[2]);
 

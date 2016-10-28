@@ -46,8 +46,12 @@ public class MainActivity extends Activity {
 
     ListView quickMessages;
     ListView contacts;
+    ListView morseToAlphabetList;
+    ListView alphabetToMorseList;
 
     ArrayAdapter<String> adapter;
+    ArrayAdapter<String> adapter2;
+    ArrayAdapter<String> adapter3;
     ArrayList<String> listItems;
 
     Cursor temp_cursor;
@@ -84,6 +88,8 @@ public class MainActivity extends Activity {
 
         quickMessages = (ListView) findViewById(R.id.QuickMessages);
         contacts = (ListView) findViewById(R.id.Contacts);
+        morseToAlphabetList = (ListView) findViewById(R.id.MorseToAlphabetList);
+        alphabetToMorseList = (ListView) findViewById(R.id.AlphabetToMorseList);
 
         final Vibrator vibe = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE) ;
 
@@ -91,6 +97,13 @@ public class MainActivity extends Activity {
         final Msg sms_view = new Msg();
         final Msg morse_code_view =  new Msg();
         final MADictionary md = new MADictionary(charTree);
+        final AMDictionary ad = new AMDictionary(charTree);
+
+        adapter2 = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, md.MAList);
+        morseToAlphabetList.setAdapter(adapter2);
+
+        adapter3 = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, ad.MAList);
+        alphabetToMorseList.setAdapter(adapter3);
 
         listItems = new ArrayList<String>();
         listItems.add("SOS");
@@ -238,7 +251,6 @@ public class MainActivity extends Activity {
                     case MotionEvent.ACTION_DOWN:
                         morseTap.setBackgroundColor(Color.parseColor("#1A9FC8"));
                         action_down_moment = System.currentTimeMillis();
-
                         if (check==true) {
                             final_letter.cancel();
                             final_word.cancel();
