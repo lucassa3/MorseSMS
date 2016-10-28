@@ -64,16 +64,6 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        /*if(ContextCompat.checkSelfPermission(this, Manifest.permission.SEND_SMS) != PackageManager.PERMISSION_GRANTED) {
-            Log.i("DEBUG", "ENTROU NO SMS");
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.SEND_SMS}, 0);
-        }
-
-        if(ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
-            Log.i("DEBUG", "ENTROU NO CONTACTS");
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_CONTACTS}, 0);
-        }*/
-
         sendSMSBtn = (Button) findViewById(R.id.SendSMSBtn);
         backspaceBtn = (Button) findViewById(R.id.BackspaceBtn);
         quickMessagesBtn = (Button) findViewById(R.id.QuickMessagesBtn);
